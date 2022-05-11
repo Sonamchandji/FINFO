@@ -13,10 +13,11 @@ api_key = "d3a9b381b061bb64b93dc2228528df1c"
 publisher = pubsub_v1.PublisherClient(batch_settings=pubsub_v1.types.BatchSettings(max_latency=5))
 topic_path = publisher.topic_path(project_id, topic_name)
 kaggle.api.authenticate()
-kaggle.api.dataset_download_files('gennadiyr/us-equities-news-data', path='/home/itproject2022bootcamp', unzip=True)
-local_data = '/home/itproject2022bootcamp/ us_equities_news_dataset.csv'
+dir=os.getcwd()
+kaggle.api.dataset_download_files('gennadiyr/us-equities-news-data',path=dir,unzip=True)
+local_data=os.path.join(dir,'us_equities_news_dataset.csv')
 file_name=' us_equities_news_dataset.csv'
-upload(bucket_name,local_data,file_name)
+
 
 storage_client=storage.Client(project='gcp-project-346311')
 def create_bucket(dataset_name):
