@@ -2,6 +2,7 @@ import time
 import csv
 import kaggle
 import json
+import os
 import requests as rq
 from google.cloud import pubsub_v1
 from csv import reader
@@ -15,31 +16,9 @@ topic_path = publisher.topic_path(project_id, topic_name)
 kaggle.api.authenticate()
 dir=os.getcwd()
 kaggle.api.dataset_download_files('gennadiyr/us-equities-news-data',path=dir,unzip=True)
-local_data=os.path.join(dir,'us_equities_news_dataset.csv')
+local_path=os.path.join(dir,'us_equities_news_dataset.csv')
 file_name=' us_equities_news_dataset.csv'
-
-
-storage_client=storage.Client(project='gcp-project-346311')
-def create_bucket(dataset_name):
-     # creating a new bucket
-     bucket = storage_client.create_bucket(dataset_name)
-     print('buckey created'.format(bucket.name))
-
-
-def upload_blob(bucket_name,source_file_name,destination_blob_name):
-# uploads the file to the bucket
-     bucket=storage_client.get_bucket(bucket_name)
-     blob=bucket.blob(destination_blob_name)
-     blob.upload_from_filename(source_file_name)
-     print('file uploaded to',destination_blob_name)
-
-
-bucket_name = ' FINFO_publc_data'
-try:
-    create_bucket(bucket_name)
-except:
-    pass
-
-upload_blob(bucket_name,local_data,file_name)
-print('Data inside of', bucket_name,':')
-list_blobs(bucket_name)
+credential_path ="gcp-project-346311-7d11c0803e0c.json"
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
+bucket_name='gs://finfo-2022/temp'
+os.system('gsutil cp '+ file_name +' '+ bucket_name)
