@@ -32,6 +32,7 @@ def get_timestamp(row):
     ## convert from bytes to str
     #line = line.decode('utf-8')
      # look at first field of row
+      #for testing
      line= ','.join([str(item)for item in row])
      timestamp = line.split(',')[0]
      #return(timestamp)
