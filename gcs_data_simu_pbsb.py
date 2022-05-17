@@ -22,12 +22,12 @@ INPUT = 'raw_pe_data.csv'
 def publish(publisher, topic, events):
    numobs = len(events)
    if numobs > 0:
-       logging.info('Publishing {0} events from {1}'.format(numobs, get_timestamp(events[0])))
+      # logging.info('Publishing {0} events from {1}'.format(numobs, get_timestamp(events[0])))
        for event_data in events:
          ## convert from bytes to str
-         event_data = event_data.decode('utf-8')
+          event_data = event_data.encode('utf-8')
 
-         publisher.publish(topic,event_data)
+          publisher.publish(topic,event_data)
 def get_timestamp(row):
     ## convert from bytes to str
     #line = line.decode('utf-8')
@@ -64,7 +64,7 @@ def simulate(topic, ifp, firstObsTime, programStart, speedFactor):
               logging.info('Sleeping {} seconds'.format(to_sleep_secs))
               time.sleep(to_sleep_secs)
          topublish.append(event_data)
-       print(event_data)
+      # print(event_data)
 
    # left-over records; notify again
        publish(publisher, topic, topublish)
@@ -111,7 +111,7 @@ for row in reader:
         else:
             break
         n=n+1
-#        print(firstObsTime)
+       # print(firstObsTime)
 
 
 #with gzip.open(INPUT, 'rb') as ifp:
