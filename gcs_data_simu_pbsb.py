@@ -22,17 +22,16 @@ INPUT = 'raw_pe_data.csv'
 def publish(publisher, topic, events):
    numobs = len(events)
    if numobs > 0:
-       logging.info('Publishing {0} events from {1}'.format(numobs, get_timestamp(events[0])))
+      # logging.info('Publishing {0} events from {1}'.format(numobs, get_timestamp(events[0])))
        for event_data in events:
          ## convert from bytes to str
-         event_data = event_data.decode('utf-8')
+          event_data = event_data.encode('utf-8')
 
-         publisher.publish(topic,event_data)
+          publisher.publish(topic,event_data)
 def get_timestamp(row):
     ## convert from bytes to str
     #line = line.decode('utf-8')
      # look at first field of row
-      #for testing
      line= ','.join([str(item)for item in row])
      timestamp = line.split(',')[0]
      #return(timestamp)
@@ -49,7 +48,7 @@ def simulate(topic, ifp, firstObsTime, programStart, speedFactor):
 
        topublish = list()
        for line in ifp:
-         event_data =','.join([str(item)for item in line]) 
+         event_data =','.join([str(item)for item in line])
          # entire line of input CSV is the message
          obs_time = get_timestamp(line) # from first column
 
@@ -112,7 +111,7 @@ for row in reader:
         else:
             break
         n=n+1
-#        print(firstObsTime)
+       # print(firstObsTime)
 
 
 #with gzip.open(INPUT, 'rb') as ifp:
@@ -121,4 +120,3 @@ for row in reader:
        # print (type(firstObsTime))
         #logging.info('Sending sensor data from {}'.format(firstObsTime))
 simulate(event_type, reader, firstObsTime, programStartTime, args.speedFactor)
-
