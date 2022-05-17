@@ -64,7 +64,7 @@ def simulate(topic, ifp, firstObsTime, programStart, speedFactor):
               logging.info('Sleeping {} seconds'.format(to_sleep_secs))
               time.sleep(to_sleep_secs)
          topublish.append(event_data)
-       print(event_data)
+    #   print(event_data)
 
    # left-over records; notify again
        publish(publisher, topic, topublish)
